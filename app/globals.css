@@ -67,3 +67,9 @@ img { max-width: 100%; height: auto; }
     transition-duration: 0.01ms !important; scroll-behavior: auto !important;
   }
 }
+
+.mascot {
+  flex: none; display: block; width: 224px; height: 224px; margin: 0; padding: 0;
+  border: none; background: none; cursor: pointer;
+}
+.mascot canvas { display: block; width: 224px; height: 224px; image-rendering: pixelated; }

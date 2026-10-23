@@ -1,4 +1,5 @@
 import { CoverBand } from "@/components/CoverBand";
+import { Mascot } from "@/components/mascot/Mascot";
 import { PostIndex } from "@/components/home/PostIndex";
 import { Sidebar } from "@/components/home/Sidebar";
 import { site } from "@/content/site";
@@ -14,8 +15,7 @@ export default async function Home() {
       <CoverBand fade={35}>
         <div className={`container ${styles.bandRow}`}>
           <h1 className={styles.blogName}>{site.name}</h1>
-          {/* Mascot slot (Phase 3). Fixed size so the frog never shifts layout. */}
-          <div className={styles.frogSlot} />
+          <Mascot />
         </div>
       </CoverBand>
       <div className={`container ${styles.body}`}>
