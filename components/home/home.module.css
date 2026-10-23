@@ -1,0 +1,78 @@
+/* Cover band */
+.bandRow {
+  padding-top: 40px; padding-bottom: 4px;
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px;
+}
+.blogName {
+  margin: 0 0 28px;
+  font-family: var(--serif); font-size: clamp(40px, 5.5vw, 56px);
+  line-height: 1.05; font-weight: 400; letter-spacing: -0.045em;
+}
+.frogSlot { flex: none; width: 224px; height: 224px; }
+
+/* Layout */
+.body {
+  padding-top: 8px; padding-bottom: 96px;
+  display: flex; flex-wrap: wrap; gap: 56px 80px; align-items: flex-start;
+}
+.main { flex: 999 1 560px; min-width: 0; max-width: 700px; display: flex; flex-direction: column; }
+
+/* Category bar */
+.catBar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0 28px;
+  border-bottom: 1px solid var(--line-2);
+}
+.catButton {
+  display: flex; align-items: baseline; gap: 5px;
+  min-height: 44px; margin: 0 0 -1px; padding: 12px 0 0;
+  border: none; border-bottom: 1.5px solid transparent; background: none;
+  color: var(--text-3); font-family: var(--sans); font-size: 15px; cursor: pointer;
+}
+.catButton:hover { color: var(--text); }
+.catButton[aria-pressed="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+.catCount { font-family: var(--mono); font-size: 11px; }
+
+/* Post rows */
+.row {
+  padding: 28px 0; border-bottom: 1px solid var(--line-2);
+  display: flex; align-items: center; gap: 32px;
+}
+.rowText { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.rowMeta { gap: 6px 16px; align-items: center; }
+.rowTitle {
+  margin: 0; font-family: var(--serif); font-size: 25px; line-height: 1.25;
+  font-weight: 400; letter-spacing: -0.02em; text-wrap: balance;
+}
+.rowTitle a { color: var(--text); }
+.rowTitle a:hover { color: var(--accent-hover); }
+.rowExcerpt {
+  margin: 0; font-family: var(--serif); font-size: 17px; line-height: 1.6;
+  color: var(--text-2); text-wrap: pretty;
+}
+.thumb {
+  flex: none; width: clamp(80px, 24%, 160px); aspect-ratio: 10 / 7;
+  border-radius: 10px; background: var(--placeholder); overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar { flex: 1 1 260px; max-width: 300px; display: flex; flex-direction: column; gap: 40px; padding-top: 4px; }
+.profile { display: flex; flex-direction: column; gap: 16px; }
+.avatar { display: block; width: 96px; height: 96px; border-radius: 48px; background: var(--avatar-placeholder); object-fit: cover; }
+.nameBlock { display: flex; flex-direction: column; gap: 6px; }
+.name { font-family: var(--serif); font-size: 24px; font-weight: 400; letter-spacing: -0.02em; }
+.bio { margin: 0; font-family: var(--serif); font-size: 16px; line-height: 1.6; color: var(--text-2); text-wrap: pretty; }
+.links { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; }
+.links a { display: inline-flex; align-items: center; min-height: 44px; margin: -12px 0; }
+.sideSection { display: flex; flex-direction: column; }
+.sideLabel {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-3); padding-bottom: 4px;
+}
+.entry {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--line-2);
+}
+.entryText { display: flex; flex-direction: column; gap: 2px; }
+.entryRole { font-size: 15px; font-weight: 500; }
+.entryOrg { font-size: 14px; color: var(--text-2); }
+.entryYears { font-family: var(--mono); font-size: 12px; color: var(--text-3); white-space: nowrap; }

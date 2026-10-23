@@ -1,0 +1,54 @@
+---
+title: Your A/B test needs more users than you think
+subtitle: A one-line rule for sample size, and why halving the effect quadruples the cost.
+date: 2026-10-23
+category: Statistics
+status: draft
+---
+
+## The rule
+
+Most A/B tests I’ve seen end the same way: two weeks of traffic, a lift that looks real, and a p-value that won’t drop below 0.05. The usual cause isn’t bad luck. The test was too small to detect the effect it was looking for.
+
+There’s a quick check you can run before you start. For a two-group test at 80% power and $\alpha = 0.05$, the sample size per group is roughly:
+
+<Eq n={1}>
+
+$$
+n \approx \frac{16\sigma^2}{\delta^2}
+$$
+
+</Eq>
+
+Here $\sigma$ is the standard deviation of your metric and $\delta$ is the smallest difference you care about.[^lehr] The $\delta^2$ in the denominator is the part that hurts. Halve the effect you want to detect and you need four times the users.
+
+<Callout label="Worked example">
+At a 10% conversion rate, $\sigma^2 \approx 0.09$. Detecting a lift to 11% takes about 14,400 users per group. Detecting a lift to 10.5% takes about 57,600.
+</Callout>
+
+## Play with it
+
+The curve below is the chance your test detects a real effect, for each sample size per group. Drag the slider to change the effect size $d$, the difference divided by $\sigma$.
+
+```python
+import numpy as np
+from scipy.stats import norm
+
+def power(n, d, alpha=0.05):
+    z = norm.ppf(1 - alpha / 2)
+    return norm.cdf(d * np.sqrt(n / 2) - z)
+```
+
+{/* Phase 2: replace the code block above with <NotebookCell src="./power.ipynb" cell={3} /> and the interactive <PowerCurve />. */}
+
+At $d = 0.2$, which Cohen called a small effect, you need about 400 users per group. At $d = 0.1$ you need about 1,570.
+
+<PullQuote>
+Halve the effect you want to detect, and you need four times the users.
+</PullQuote>
+
+## What to do instead
+
+If the number is out of reach, you have three honest options. Test a bigger change, which raises $\delta$. Pick a less noisy metric, which lowers $\sigma$. Or wait until you have the traffic. Running the test anyway and hoping is not one of them.
+
+[^lehr]: Lehr’s rule. The 16 comes from $2(z_{0.975} + z_{0.80})^2 = 2(1.96 + 0.84)^2 \approx 15.7$.

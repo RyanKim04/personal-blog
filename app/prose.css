@@ -1,0 +1,88 @@
+/* Article body and MDX components (SPEC §4, §6). */
+.prose {
+  display: flex; flex-direction: column; gap: 22px;
+  font-family: var(--serif); font-size: 19px; line-height: 1.8;
+}
+.prose > * { margin: 0; }
+.prose p, .prose li { text-wrap: pretty; }
+.prose a { text-underline-offset: 3px; }
+.prose p a:not([data-footnote-ref]) { text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: rgba(47, 107, 79, 0.4); }
+
+/* Section headings: mono number + serif h2. 22px gap + 42px = 64px between sections. */
+.prose > .section-head { display: flex; align-items: baseline; gap: 14px; margin-top: 42px; }
+.prose > .section-head:first-child { margin-top: 0; }
+.section-num { font-family: var(--mono); font-size: 13px; color: var(--accent); }
+.section-head h2 {
+  margin: 0; font-family: var(--serif); font-size: 36px; line-height: 1.15;
+  font-weight: 400; letter-spacing: -0.035em; scroll-margin-top: 32px;
+}
+.prose h3 { font-family: var(--serif); font-size: 24px; line-height: 1.3; font-weight: 400; letter-spacing: -0.02em; margin-top: 18px; }
+.prose ul, .prose ol { padding-left: 1.4em; }
+.prose li + li { margin-top: 6px; }
+.prose hr { border: none; border-top: 1px solid var(--line); width: 100%; }
+.prose img { border-radius: 10px; display: block; }
+
+/* Inline code and code blocks (Shiki via rehype-pretty-code) */
+.prose :not(pre) > code {
+  font-family: var(--mono); font-size: 0.82em; background: var(--panel);
+  border: 1px solid var(--line); border-radius: 4px; padding: 0.1em 0.35em;
+}
+.prose figure[data-rehype-pretty-code-figure] { margin: 0; }
+.prose pre {
+  margin: 0; padding: 18px 20px; overflow-x: auto;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.7;
+}
+.prose pre code { font-family: inherit; display: grid; }
+
+/* Math */
+.prose .katex { font-size: 1.08em; }
+.prose .katex-display { margin: 0; padding: 12px 0; overflow-x: auto; overflow-y: hidden; }
+.prose .katex-display > .katex { font-size: 1.4em; }
+.eq { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.eq-spacer, .eq-num { flex: none; width: 32px; }
+.eq-body { flex: 1 1 auto; min-width: 0; }
+.eq-num { text-align: right; font-size: 18px; color: var(--text-2); }
+
+/* Callout: tinted box, no border */
+.callout {
+  background: var(--accent-tint); border-radius: 14px; padding: 20px 24px;
+  display: flex; flex-direction: column; gap: 6px;
+  font-size: 17px; line-height: 1.6;
+}
+.callout > p { margin: 0; }
+.callout-label {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--accent);
+}
+
+/* Pull quote */
+.pullquote { margin: 8px 0 !important; display: flex; flex-direction: column; gap: 16px; }
+.pullquote-bar { display: block; width: 40px; height: 3px; border-radius: 2px; background: var(--accent); }
+.pullquote > p {
+  margin: 0; font-size: 32px; line-height: 1.25; font-weight: 400;
+  letter-spacing: -0.03em; text-wrap: balance;
+}
+
+/* Figures */
+.figure { display: flex; flex-direction: column; gap: 10px; }
+.figure figcaption { font-family: var(--sans); font-size: 14px; line-height: 1.5; color: var(--text-2); }
+@media (min-width: 961px) {
+  .figure-wide { width: min(960px, calc(100% + 80px + max(0px, (100vw - 1120px) / 2))); }
+}
+
+/* End of post, then footnotes (moved after the ∎ with flex order) */
+.post-end { order: 1; display: flex; flex-direction: column; gap: 22px; }
+.post-end-mark { color: var(--accent); font-size: 18px; line-height: 1; }
+.post-end p { margin: 0; font-size: 16px; color: var(--text-2); }
+.prose sup { line-height: 0; }
+.prose [data-footnote-ref] { font-family: var(--mono); font-size: 12px; padding: 0 1px; }
+.prose > .footnotes {
+  order: 2; border-top: 1px solid var(--line); padding-top: 20px;
+  font-size: 14px; line-height: 1.6; color: var(--text-2);
+}
+.footnotes ol { list-style: none; counter-reset: fn; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.footnotes li { counter-increment: fn; display: flex; gap: 12px; margin: 0; }
+.footnotes li::before { content: counter(fn); font-family: var(--mono); color: var(--accent); }
+.footnotes li p { margin: 0; }
+.footnotes [data-footnote-backref] { font-family: var(--mono); margin-left: 4px; }

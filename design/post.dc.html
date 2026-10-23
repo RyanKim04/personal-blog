@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Post · A/B test sample size</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F7F6F2}
+a{color:#2F6B4F;text-decoration:none}a:hover{color:#22503A;text-decoration:underline}
+@media (max-width: 960px){[data-toc]{position:static !important}}
+</style>
+</helmet>
+<div style="background: {{bg}}; color: #1F1D1A; font-family: -apple-system, system-ui, 'Segoe UI', sans-serif; -webkit-font-smoothing: antialiased">
+
+<header style="position: relative">
+<div aria-hidden="true" style="position: absolute; inset: 0; background-image: linear-gradient(#E8E3D9 1px, transparent 1px), linear-gradient(90deg, #E8E3D9 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 100%); mask-image: linear-gradient(to bottom, #000 30%, transparent 100%)"></div>
+<div style="position: relative; max-width: 1120px; margin: 0 auto; padding: 0 24px">
+<div style="min-height: 64px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+<a href="Home.dc.html" style="color: #1F1D1A; font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif; font-size: 21px; letter-spacing: -0.02em">[Blog Name]</a>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 0 72px; padding: 56px 0 64px">
+<div aria-hidden="true" style="flex: 1 1 180px; max-width: 220px"></div>
+<div style="flex: 999 1 560px; min-width: 0; max-width: 700px; display: flex; flex-direction: column; gap: 20px">
+<a href="Home.dc.html" style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; color: #5C5850">← All writing</a>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B665C">
+<span style="color: {{accent}}">Statistics</span>
+<span>October 2026</span>
+</div>
+<h1 style="margin: 0; font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif; font-size: clamp(40px, 5.5vw, 57px); line-height: 1.05; font-weight: 400; letter-spacing: -0.05em; text-wrap: balance">Your A/B test needs more users than you think</h1>
+<p style="margin: 0; font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif; font-size: 22px; line-height: 1.45; color: #5C5850; text-wrap: pretty">A one-line rule for sample size, and why halving the effect quadruples the cost.</p>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 8px; font-size: 15px">
+<span style="font-weight: 500">Ryan Kim</span>
+<span aria-hidden="true" style="width: 4px; height: 4px; border-radius: 2px; background: #C9C2B5"></span>
+<a href="#" style="color: #5C5850">GitHub</a>
+<a href="#" style="color: #5C5850">LinkedIn</a>
+</div>
+</div>
+</div>
+</div>
+</header>
+
+<div style="max-width: 1120px; margin: 0 auto; padding: 0 24px">
+<div style="border-top: 1px solid #E6E1D8; padding: 48px 0 96px; display: flex; flex-wrap: wrap; gap: 40px 72px; align-items: flex-start">
+
+<nav data-toc="1" aria-label="Table of contents" style="flex: 1 1 180px; max-width: 220px; position: sticky; top: 32px; align-self: flex-start; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #6B665C; padding-bottom: 12px">Table of contents</span>
+<sc-for list="{{toc}}" as="it" hint-placeholder-count="3">
+<a href="#{{it.id}}" style="display: flex; align-items: center; gap: 14px; min-height: 40px; font-size: 15px; color: {{it.color}}">
+<span style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; color: #6B665C">{{it.num}}</span>
+<span style="padding-bottom: 2px; border-bottom: 1.5px solid {{it.line}}">{{it.label}}</span>
+</a>
+</sc-for>
+</nav>
+
+<article style="flex: 999 1 560px; min-width: 0; max-width: 700px; display: flex; flex-direction: column; gap: 64px; font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif; font-size: 19px; line-height: 1.8">
+
+<section id="the-rule" style="display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; align-items: baseline; gap: 14px">
+<span style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; color: {{accent}}">01</span>
+<h2 style="margin: 0; font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif; font-size: 36px; line-height: 1.15; font-weight: 400; letter-spacing: -0.035em">The rule</h2>
+</div>
+<p style="margin: 0; text-wrap: pretty">Most A/B tests I’ve seen end the same way: two weeks of traffic, a lift that looks real, and a p-value that won’t drop below 0.05. The usual cause isn’t bad luck. The test was too small to detect the effect it was looking for.</p>
+<p style="margin: 0; text-wrap: pretty">There’s a quick check you can run before you start. For a two-group test at 80% power and <span style="font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic; font-size: 1.08em">α</span> = 0.05, the sample size per group is roughly:</p>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0">
+<span aria-hidden="true" style="width: 32px"></span>
+<div style="display: flex; align-items: center; gap: 14px; font-family: 'STIX Two Text', 'Times New Roman', serif; font-size: 28px; line-height: 1">
+<span style="font-style: italic">n</span>
+<span>≈</span>
+<div style="display: flex; flex-direction: column; align-items: stretch">
+<div style="padding: 0 8px 6px; text-align: center">16<span style="font-style: italic">σ</span><sup style="font-size: 0.6em">2</sup></div>
+<div style="border-top: 1.5px solid #1F1D1A; padding: 6px 8px 0; text-align: center"><span style="font-style: italic">δ</span><sup style="font-size: 0.6em">2</sup></div>
+</div>
+</div>
+<span style="width: 32px; text-align: right; font-family: 'STIX Two Text', 'Times New Roman', serif; font-size: 18px; color: #5C5850">(1)</span>
+</div>
+<p style="margin: 0; text-wrap: pretty">Here <span style="font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic; font-size: 1.08em">σ</span> is the standard deviation of your metric and <span style="font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic; font-size: 1.08em">δ</span> is the smallest difference you care about.<sup style="font-size: 12px; line-height: 0"><a href="#fn1" style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: {{accent}}">1</a></sup> The <span style="font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic; font-size: 1.08em">δ</span>² in the denominator is the part that hurts. Halve the effect you want to detect and you need four times the users.</p>
+<aside style="background: {{accentTint}}; border-radius: 14px; padding: 20px 24px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: {{accent}}">Worked example</span>
+<p style="margin: 0; font-size: 17px; line-height: 1.6; text-wrap: pretty">At a 10% conversion rate, <span style="font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic; font-size: 1.08em">σ</span>² ≈ 0.09. Detecting a lift to 11% takes about 14,400 users per group. Detecting a lift to 10.5% takes about 57,600.</p>
+</aside>
+</section>
+
+<section id="play" style="display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; align-items: baseline; gap: 14px">
+<span style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; color: {{accent}}">02</span>
+<h2 style="margin: 0; font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif; font-size: 36px; line-height: 1.15; font-weight: 400; letter-spacing: -0.035em">Play with it</h2>
+</div>
+<p style="margin: 0; text-wrap: pretty">The curve below is the chance your test detects a real effect, for each sample size per group. Drag the slider to change the effect size <span style="font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic; font-size: 1.08em">d</span>, the difference divided by <span style="font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic; font-size: 1.08em">σ</span>.</p>
+
+<figure style="margin: 0; border: 1px solid #E6E1D8; border-radius: 16px; overflow: hidden; background: #FFFFFF; font-family: -apple-system, system-ui, 'Segoe UI', sans-serif; line-height: 1.5">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #E6E1D8; background: #F8F6F1; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: #6B665C">
+<span>power.ipynb · In [3]</span>
+<span>Python 3</span>
+</div>
+<div style="padding: 18px 20px; background: #F8F6F1; border-bottom: 1px solid #E6E1D8; overflow-x: auto; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13.5px; line-height: 1.7; color: #1F1D1A">
+<div style="white-space: pre"><span style="color: #2F6B4F">import</span><span> numpy </span><span style="color: #2F6B4F">as</span><span> np</span></div>
+<div style="white-space: pre"><span style="color: #2F6B4F">from</span><span> scipy.stats </span><span style="color: #2F6B4F">import</span><span> norm</span></div>
+<div style="height: 1.7em"></div>
+<div style="white-space: pre"><span style="color: #2F6B4F">def</span><span> </span><span style="color: #8B5A2B">power</span><span>(n, d, alpha=</span><span style="color: #B4441F">0.05</span><span>):</span></div>
+<div style="white-space: pre; padding-left: 4ch"><span>z = norm.ppf(</span><span style="color: #B4441F">1</span><span> - alpha / </span><span style="color: #B4441F">2</span><span>)</span></div>
+<div style="white-space: pre; padding-left: 4ch"><span style="color: #2F6B4F">return</span><span> norm.cdf(d * np.sqrt(n / </span><span style="color: #B4441F">2</span><span>) - z)</span></div>
+</div>
+<div style="padding: 16px 20px 18px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 24px">
+<label for="d-a" style="font-size: 15px; font-weight: 500">Effect size <span style="font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic; font-size: 17px">d</span> = <span style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: {{accent}}">{{dLabel}}</span></label>
+<input id="d-a" type="range" min="0.08" max="0.5" step="0.01" value="{{dValue}}" onChange="{{onD}}" style="flex: 1 1 220px; max-width: 340px; height: 44px; margin: 0; accent-color: {{accent}}">
+</div>
+<svg viewBox="0 0 640 300" role="img" aria-label="Power by sample size per group, for effect size d = {{dLabel}}" style="width: 100%; height: auto; display: block">
+<defs>
+<linearGradient id="fillA" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="{{accent}}" stop-opacity="0.16"></stop>
+<stop offset="1" stop-color="{{accent}}" stop-opacity="0"></stop>
+</linearGradient>
+</defs>
+<g stroke="#EFEBE4" stroke-width="1">
+<line x1="48" y1="16" x2="624" y2="16"></line>
+<line x1="48" y1="113.6" x2="624" y2="113.6"></line>
+<line x1="48" y1="162.4" x2="624" y2="162.4"></line>
+<line x1="48" y1="211.2" x2="624" y2="211.2"></line>
+</g>
+<line x1="48" y1="64.8" x2="624" y2="64.8" stroke="#A8A194" stroke-width="1" stroke-dasharray="4 4"></line>
+<line x1="48" y1="260" x2="624" y2="260" stroke="#D6D0C4" stroke-width="1"></line>
+<g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#6B665C" text-anchor="end">
+<text x="40" y="20">100%</text>
+<text x="40" y="68.8">80%</text>
+<text x="40" y="117.6">60%</text>
+<text x="40" y="166.4">40%</text>
+<text x="40" y="215.2">20%</text>
+<text x="40" y="264">0%</text>
+</g>
+<g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#6B665C" text-anchor="middle">
+<text x="48" y="280">0</text>
+<text x="192" y="280">500</text>
+<text x="336" y="280">1,000</text>
+<text x="480" y="280">1,500</text>
+<text x="624" y="280">2,000</text>
+<text x="336" y="298">users per group</text>
+</g>
+<path d="{{areaPath}}" fill="url(#fillA)"></path>
+<path d="{{curvePath}}" fill="none" stroke="{{accent}}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></path>
+<g opacity="{{markOpacity}}">
+<line x1="{{markX}}" y1="64.8" x2="{{markX}}" y2="260" stroke="{{accent}}" stroke-width="1" stroke-dasharray="3 3"></line>
+<circle cx="{{markX}}" cy="64.8" r="5" fill="#FFFFFF" stroke="{{accent}}" stroke-width="2.5"></circle>
+<text x="{{labelX}}" y="52" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#1F1D1A">n = {{n80Label}}</text>
+</g>
+</svg>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; font-size: 14px; color: #5C5850">
+<span>80% power needs <strong style="color: #1F1D1A; font-weight: 600">{{n80Label}}</strong> users per group</span>
+<span style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px">α = 0.05, two-sided</span>
+</div>
+</div>
+</figure>
+
+<p style="margin: 0; text-wrap: pretty">At <span style="font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic; font-size: 1.08em">d</span> = 0.2, which Cohen called a small effect, you need about 400 users per group. At <span style="font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic; font-size: 1.08em">d</span> = 0.1 you need about 1,570.</p>
+<blockquote style="margin: 8px 0; display: flex; flex-direction: column; gap: 16px">
+<span aria-hidden="true" style="display: block; width: 40px; height: 3px; border-radius: 2px; background: {{accent}}"></span>
+<p style="margin: 0; font-size: 32px; line-height: 1.25; font-weight: 400; letter-spacing: -0.03em; text-wrap: balance">Halve the effect you want to detect, and you need four times the users.</p>
+</blockquote>
+</section>
+
+<section id="instead" style="display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; align-items: baseline; gap: 14px">
+<span style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; color: {{accent}}">03</span>
+<h2 style="margin: 0; font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif; font-size: 36px; line-height: 1.15; font-weight: 400; letter-spacing: -0.035em">What to do instead</h2>
+</div>
+<p style="margin: 0; text-wrap: pretty">If the number is out of reach, you have three honest options. Test a bigger change, which raises <span style="font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic; font-size: 1.08em">δ</span>. Pick a less noisy metric, which lowers <span style="font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic; font-size: 1.08em">σ</span>. Or wait until you have the traffic. Running the test anyway and hoping is not one of them.</p>
+<span aria-hidden="true" style="color: {{accent}}; font-size: 18px">∎</span>
+<p style="margin: 0; font-size: 16px; color: #5C5850">Thanks for reading. Spot a mistake? <a href="#">Tell me</a>.</p>
+<div id="fn1" style="border-top: 1px solid #E6E1D8; padding-top: 20px; display: flex; gap: 12px; font-size: 14px; line-height: 1.6; color: #5C5850">
+<span style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: {{accent}}">1</span>
+<p style="margin: 0; text-wrap: pretty">Lehr’s rule. The 16 comes from 2(<span style="font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic">z</span><sub>0.975</sub> + <span style="font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic">z</span><sub>0.80</sub>)² = 2(1.96 + 0.84)² ≈ 15.7.</p>
+</div>
+</section>
+
+<nav aria-label="More posts" style="display: flex; flex-wrap: wrap; gap: 12px">
+<a href="Home.dc.html" style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 4px; padding: 16px 20px; border: 1px solid #E6E1D8; border-radius: 14px; background: #FFFFFF; color: #1F1D1A">
+<span style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: #6B665C">← Previous</span>
+<span style="font-size: 18px; font-weight: 400; line-height: 1.4">Calibration plots, explained with one model</span>
+</a>
+<a href="Home.dc.html" style="flex: 1 1 260px; display: flex; flex-direction: column; align-items: flex-end; text-align: right; gap: 4px; padding: 16px 20px; border: 1px solid #E6E1D8; border-radius: 14px; background: #FFFFFF; color: #1F1D1A">
+<span style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: #6B665C">All posts →</span>
+<span style="font-size: 18px; font-weight: 400; line-height: 1.4">Back to [Blog Name]</span>
+</a>
+</nav>
+
+<section id="comments" aria-label="Comments" style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 26px; line-height: 1.3; font-weight: 400; letter-spacing: -0.02em">Comments</h2>
+<div style="border: 1.5px dashed #D6D0C4; border-radius: 14px; padding: 28px 24px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; font-size: 15px; color: #5C5850">
+<span style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: #6B665C">[giscus]</span>
+<span>Comments load here. Readers sign in with GitHub to reply.</span>
+</div>
+</section>
+
+</article>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2F6B4F","options":["#2F6B4F","#8B2F2F","#1F1D1A"]},"bg":{"editor":"color","default":"#F7F6F2","options":["#F7F6F2","#F5F6F8","#FFFFFF"]},"$preview":{"width":1280,"height":3450}}'>
+class Component extends DCLogic {
+  tint(hex, a) {
+    var h = String(hex).replace('#', '');
+    if (h.length === 3) { h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2]; }
+    var r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+  }
+  powerAt(n, d) {
+    var x = d * Math.sqrt(n / 2) - 1.959964;
+    var t = 1 / (1 + 0.2316419 * Math.abs(x));
+    var k = 0.3989423 * Math.exp(-x * x / 2);
+    var p = k * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+    return x > 0 ? 1 - p : p;
+  }
+  sections() {
+    return [
+      { id: 'the-rule', num: '01', label: 'The rule' },
+      { id: 'play', num: '02', label: 'Play with it' },
+      { id: 'instead', num: '03', label: 'What to do instead' }
+    ];
+  }
+  componentDidMount() {
+    var self = this;
+    var ids = this.sections().map(function (s) { return s.id; });
+    this.onScroll = function () {
+      var cur = ids[0];
+      var limit = window.innerHeight * 0.35;
+      for (var i = 0; i < ids.length; i++) {
+        var el = document.getElementById(ids[i]);
+        if (el && el.getBoundingClientRect().top <= limit) { cur = ids[i]; }
+      }
+      if (!self.state || self.state.active !== cur) { self.setState({ active: cur }); }
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    this.onScroll();
+  }
+  componentWillUnmount() {
+    if (this.onScroll) { window.removeEventListener('scroll', this.onScroll); }
+  }
+  renderVals() {
+    var self = this;
+    var accent = this.props.accent ?? '#2F6B4F';
+    var st = this.state || {};
+    var d = st.d || 0.2;
+    var active = st.active || 'the-rule';
+    var L = 48, T = 16, W = 576, H = 244, NMAX = 2000;
+    var pts = [];
+    for (var n = 0; n <= NMAX; n += 20) {
+      var px = L + (n / NMAX) * W;
+      var py = T + (1 - this.powerAt(n, d)) * H;
+      pts.push(px.toFixed(1) + ' ' + py.toFixed(1));
+    }
+    var curve = 'M ' + pts.join(' L ');
+    var area = curve + ' L ' + (L + W) + ' ' + (T + H) + ' L ' + L + ' ' + (T + H) + ' Z';
+    var n80 = Math.ceil(2 * Math.pow((1.959964 + 0.841621) / d, 2));
+    var inRange = n80 <= NMAX;
+    var mx = L + (Math.min(n80, NMAX) / NMAX) * W;
+    var toc = this.sections().map(function (s) {
+      var on = s.id === active;
+      return {
+        id: s.id,
+        num: s.num,
+        label: s.label,
+        color: on ? accent : '#5C5850',
+        line: on ? accent : 'transparent'
+      };
+    });
+    return {
+      bg: this.props.bg ?? '#F7F6F2',
+      accent: accent,
+      accentTint: this.tint(accent, 0.07),
+      curvePath: curve,
+      areaPath: area,
+      dLabel: d.toFixed(2),
+      dValue: d,
+      n80Label: n80.toLocaleString('en-US'),
+      markOpacity: inRange ? 1 : 0,
+      markX: mx.toFixed(1),
+      labelX: Math.min(mx + 10, L + W - 84).toFixed(1),
+      onD: function (e) { self.setState({ d: Number(e.target.value) }); },
+      toc: toc
+    };
+  }
+}
+</script>
+</body>
+</html>
