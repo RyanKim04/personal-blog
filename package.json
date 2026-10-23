@@ -14,7 +14,7 @@
     "@next/mdx": "^16.4.3",
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
-    "katex": "^0.19.1",
+    "katex": "0.16.47",
     "next": "^16.4.3",
     "plotly.js-basic-dist-min": "^4.1.2",
     "react": "^19.3.1",

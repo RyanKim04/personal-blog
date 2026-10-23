@@ -9,6 +9,7 @@ Choices the spec left open, and places where the spec and the mockups disagree (
 - **npm**, since pnpm isn't installed.
 
 ## Spec vs. mockup
+- **KaTeX is pinned to the version `rehype-katex` uses** (currently 0.16.47). The CSS and the generated HTML must come from the same release, or superscripts and fractions render at the wrong sizes. Bump both together.
 - **Webfonts:** the post mockup loads STIX Two Text for math. The spec says no webfonts, so it's dropped. KaTeX ships its own math fonts, which are needed to render math at all. They only affect equations (CLS measured 0).
 - **TOC inactive color** uses `--text-2` (the mockup's value). The spec states `--text-3` only for the category bar.
 - **Minor chart tones** from the mockup are added as tokens: `--chart-grid #EFEBE4`, `--chart-ref #A8A194`, `--chart-axis #D6D0C4`, `--dot #C9C2B5`.
