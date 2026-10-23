@@ -1,5 +1,6 @@
 "use client";
 
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { PostMeta } from "@/lib/posts";
@@ -8,7 +9,14 @@ import styles from "./home.module.css";
 
 type Category = { id: string; label: string };
 
-export function PostIndex({ posts, categories, showStatus }: { posts: PostMeta[]; categories: readonly Category[]; showStatus: boolean }) {
+type Props = {
+  posts: PostMeta[];
+  thumbnails: Record<string, StaticImageData>;
+  categories: readonly Category[];
+  showStatus: boolean;
+};
+
+export function PostIndex({ posts, thumbnails, categories, showStatus }: Props) {
   const [active, setActive] = useState("all");
 
   useEffect(() => {
@@ -53,7 +61,11 @@ export function PostIndex({ posts, categories, showStatus }: { posts: PostMeta[]
             </h2>
             {p.subtitle && <p className={styles.rowExcerpt}>{p.subtitle}</p>}
           </div>
-          {p.thumbnail && <div aria-hidden="true" className={styles.thumb} />}
+          {thumbnails[p.slug] && (
+            <div className={styles.thumb}>
+              <Image src={thumbnails[p.slug]} alt="" sizes="160px" className={styles.thumbImg} />
+            </div>
+          )}
         </article>
       ))}
     </>

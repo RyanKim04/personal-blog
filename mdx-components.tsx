@@ -3,6 +3,9 @@ import { Callout } from "@/components/mdx/Callout";
 import { Eq } from "@/components/mdx/Eq";
 import { Figure, WideFigure } from "@/components/mdx/Figure";
 import { PullQuote } from "@/components/mdx/PullQuote";
+import { Video } from "@/components/mdx/Video";
+import { Notebook } from "@/components/notebook/Notebook";
+import { NotebookCell } from "@/components/notebook/NotebookCell";
 
 type H2Props = React.ComponentProps<"h2"> & { "data-num"?: string };
 
@@ -24,6 +27,9 @@ const components: MDXComponents = {
   Figure,
   WideFigure,
   PullQuote,
+  Video,
+  Notebook,
+  NotebookCell,
 };
 
 export function useMDXComponents(inherited: MDXComponents = {}): MDXComponents {

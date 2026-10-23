@@ -4,7 +4,10 @@ subtitle: A one-line rule for sample size, and why halving the effect quadruples
 date: 2026-10-23
 category: Statistics
 status: draft
+thumbnail: ./thumbnail.png
 ---
+
+import PowerCurve from "./PowerCurve";
 
 ## The rule
 
@@ -30,16 +33,9 @@ At a 10% conversion rate, $\sigma^2 \approx 0.09$. Detecting a lift to 11% takes
 
 The curve below is the chance your test detects a real effect, for each sample size per group. Drag the slider to change the effect size $d$, the difference divided by $\sigma$.
 
-```python
-import numpy as np
-from scipy.stats import norm
-
-def power(n, d, alpha=0.05):
-    z = norm.ppf(1 - alpha / 2)
-    return norm.cdf(d * np.sqrt(n / 2) - z)
-```
-
-{/* Phase 2: replace the code block above with <NotebookCell src="./power.ipynb" cell={3} /> and the interactive <PowerCurve />. */}
+<NotebookCell src="./power.ipynb" cell={3}>
+  <PowerCurve />
+</NotebookCell>
 
 At $d = 0.2$, which Cohen called a small effect, you need about 400 users per group. At $d = 0.1$ you need about 1,570.
 

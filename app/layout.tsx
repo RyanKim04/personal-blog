@@ -3,6 +3,7 @@ import { site } from "@/content/site";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 import "./prose.css";
+import "./notebook.css";
 
 export const metadata: Metadata = {
   title: { default: site.name, template: `%s · ${site.name}` },

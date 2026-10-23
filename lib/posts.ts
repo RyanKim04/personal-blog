@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import GithubSlugger from "github-slugger";
+import { notebookHeadings, type Notebook } from "./notebook";
 
 export type Status = "idea" | "brainstorm" | "outline" | "draft" | "review" | "published";
 
@@ -60,6 +61,12 @@ export function getPost(slug: string) {
 // TOC from the `## ` headings, slugged the same way rehype-slug does it.
 export function getToc(slug: string): TocItem[] {
   const { content } = matter(readSource(slug));
+  // Notebook posts: the headings live in the notebook's markdown cells.
+  const nb = /<Notebook\s+src="\.\/([^"]+\.ipynb)"/.exec(content);
+  if (nb) {
+    const data = JSON.parse(fs.readFileSync(path.join(POSTS_DIR, slug, nb[1]), "utf8")) as Notebook;
+    return notebookHeadings(data);
+  }
   const slugger = new GithubSlugger();
   const items: TocItem[] = [];
   let inFence = false;
