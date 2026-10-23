@@ -55,7 +55,7 @@ export function getPost(slug: string) {
   const posts = getAllPosts();
   const i = posts.findIndex((p) => p.slug === slug);
   if (i === -1) return null;
-  return { meta: posts[i], newer: posts[i - 1] ?? null, older: posts[i + 1] ?? null };
+  return { meta: posts[i] };
 }
 
 // TOC from the `## ` headings, slugged the same way rehype-slug does it.

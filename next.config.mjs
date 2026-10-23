@@ -28,6 +28,7 @@ const withMDX = createMDX({
 const nextConfig = {
   // .md is deliberately excluded so notes.md / outline.md can never become pages.
   pageExtensions: ["ts", "tsx", "mdx"],
+  devIndicators: false,
   webpack(config, { isServer, dir, config: nextConfig }) {
     // The server build writes somewhere under distDir; point its media at distDir/static too.
     const distDir = path.join(dir, nextConfig.distDir);

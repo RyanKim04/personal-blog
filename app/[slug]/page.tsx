@@ -25,7 +25,7 @@ export default async function PostPage({ params }: Props) {
   const { slug } = await params;
   const post = getPost(slug);
   if (!post) notFound();
-  const { meta, older } = post;
+  const { meta } = post;
   const { default: Content } = await import(`@/content/posts/${slug}/index.mdx`);
   const toc = getToc(slug);
   const showStatus = process.env.NODE_ENV !== "production" && meta.status !== "published";
@@ -71,18 +71,6 @@ export default async function PostPage({ params }: Props) {
                 Thanks for reading. Spot a mistake? <a href={`mailto:${site.profile.email}`}>Tell me</a>.
               </p>
             </div>
-            <nav aria-label="More posts" className={styles.more}>
-              {older && (
-                <Link href={`/${older.slug}`} className={styles.card}>
-                  <span className={styles.cardLabel}>← Previous</span>
-                  <span className={styles.cardTitle}>{older.title}</span>
-                </Link>
-              )}
-              <Link href="/" className={`${styles.card} ${styles.cardRight}`}>
-                <span className={styles.cardLabel}>All posts →</span>
-                <span className={styles.cardTitle}>Back to {site.name}</span>
-              </Link>
-            </nav>
             <section id="comments" aria-labelledby="comments-title" className={styles.comments}>
               <h2 id="comments-title" className={styles.commentsTitle}>Comments</h2>
               {/* giscus mounts here in Phase 5. */}

@@ -13,12 +13,12 @@ export default async function Home() {
   return (
     <>
       <CoverBand fade={35}>
-        <div className={`container ${styles.bandRow}`}>
+        <div className={`container container-wide ${styles.bandRow}`}>
           <h1 className={styles.blogName}>{site.name}</h1>
           <Mascot />
         </div>
       </CoverBand>
-      <div className={`container ${styles.body}`}>
+      <div className={`container container-wide ${styles.body}`}>
         <main className={styles.main}>
           <PostIndex posts={posts} thumbnails={thumbnails} categories={site.categories} showStatus={process.env.NODE_ENV !== "production"} />
         </main>

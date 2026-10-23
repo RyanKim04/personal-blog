@@ -42,3 +42,8 @@ Choices the spec left open, and places where the spec and the mockups disagree (
 - **Render loop:** draws step at about 12 fps. The `requestAnimationFrame` loop fully stops while the canvas is offscreen (IntersectionObserver) or the tab is hidden, instead of idling. Measured: 0 rAF calls per second offscreen. Under reduced motion it draws a single frame.
 - **Loading:** the canvas and button are in the server HTML at 224×224, so there's no layout shift. three.js loads after the `load` event plus `requestIdleCallback`, and evaluating three.js, building the scene and drawing the first frame (shader compile) run as separate tasks. The LCP element is text (measured LCP 1.9 s, CLS 0).
 - **Long-task caveat:** with software WebGL (headless Chrome's SwiftShader) the first draw is one ~1.7 s task at 4× CPU throttle. With a hardware GPU (Apple M4/Metal) there are no frog long tasks even at 4× throttle. If low-end devices matter, `failIfMajorPerformanceCaveat: true` on the renderer would skip the frog on software-only WebGL.
+
+## Changes requested after review
+- **Home page is wider than the spec:** the container is 1280px (`--container-wide`) and the post list column goes up to 840px (the spec says 1120 and 700). Post pages keep the spec's 1120 container and 700px reading column.
+- **No Previous / All posts cards** at the end of a post (spec §5.4). A post ends with ∎, the thanks line, footnotes, then comments.
+- **The Next.js dev indicator is off** (`devIndicators: false`). It only ever showed in `npm run dev`.

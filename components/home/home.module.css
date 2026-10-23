@@ -14,7 +14,7 @@
   padding-top: 8px; padding-bottom: 96px;
   display: flex; flex-wrap: wrap; gap: 56px 80px; align-items: flex-start;
 }
-.main { flex: 999 1 560px; min-width: 0; max-width: 700px; display: flex; flex-direction: column; }
+.main { flex: 999 1 560px; min-width: 0; max-width: 840px; display: flex; flex-direction: column; }
 
 /* Category bar */
 .catBar {
